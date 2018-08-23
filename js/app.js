@@ -1,3 +1,13 @@
+// document.addEventListener('DOMContentLoaded', function () {
+const windowWidth =
+  window.innerWidth-17;
+const deckWidth =
+  document.getElementsByClassName('deck')[0].getBoundingClientRect().width;
+if( windowWidth < deckWidth ) {
+  window.scroll( (deckWidth - windowWidth)/2, 0);
+}
+// });
+
 /*
  * Create a list that holds all of your cards
  */

@@ -1,23 +1,28 @@
-html {
-    box-sizing: border-box;
-}
-
 *,
 *::before,
 *::after {
     box-sizing: inherit;
 }
 
-html,
-body {
-    width: 660px;
+html {
+    box-sizing: border-box;
+    --deck-width: 660px;
+    width: var(--deck-width);
     margin: 0 auto;
-    padding: 0;
 }
 
+/* @media screen and (max-width: 660px) {
+    body {
+      margin: 0 0 0 calc( (100% - var(--deck-width))/2 );
+    }
+} */
+
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    margin: 0;
     font-family: 'Coda', cursive;
+    /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
+    background-attachment: fixed;
 }
 
 header > h1 {
@@ -31,7 +36,7 @@ header > h1 {
  */
 
 .deck {
-    width: 660px;
+    width: var(--deck-width);
     min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
