@@ -1,6 +1,12 @@
+/*
+ * Upon load, scroll view so that game is horizontally centered, when game
+ * content is larger than viewport window.
+ */
 // document.addEventListener('DOMContentLoaded', function () {
-const windowWidth =
-  window.innerWidth-17;
+const windowWidth = window.innerWidth - 17;
+/* 17 px is browswer scroll bar width on Chrome and FireFox.
+   TODO: This correction should be automatically determined. Touch screen
+   mode without scroll bars should not have a correction. */
 const deckWidth =
   document.getElementsByClassName('deck')[0].getBoundingClientRect().width;
 if( windowWidth < deckWidth ) {
@@ -11,7 +17,7 @@ if( windowWidth < deckWidth ) {
 /*
  * Create a list that holds all of your cards
  */
-
+const cardElements = document.getElementsByClassName('card');
 
 /*
  * Display the cards on the page
@@ -22,7 +28,8 @@ if( windowWidth < deckWidth ) {
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length;
+    let temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -46,3 +53,12 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+for( let i=0; i<cardElements.length; i++ ) {
+  cardElements[i].addEventListener('click', function() {
+    if(cardElements[i].classList.length===1) {
+      cardElements[i].classList.add("open", "show");
+    } else if (cardElements[i].classList.contains("open")) {
+      cardElements[i].classList.remove("open", "show");
+    }
+  });
+}
