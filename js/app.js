@@ -1,6 +1,6 @@
 /*
- * Upon load, scroll view so that game is horizontally centered, when game
- * content is larger than viewport window.
+ * When viewport window is smaller than game content, upon page load,
+ * scroll view so that game is horizontally centered.
  */
 // document.addEventListener('DOMContentLoaded', function () {
 const windowWidth = window.innerWidth - 17;
@@ -13,13 +13,6 @@ if( windowWidth < deckWidth ) {
   window.scroll( (deckWidth - windowWidth)/2, 0);
 }
 // });
-
-// String array of card symbols
-let symbols = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor",
-  "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
-
-symbols = symbols.concat(symbols); // adds a copy of each symbol
-const nCards = symbols.length;
 
 /*
  * Display the cards on the page
@@ -47,10 +40,18 @@ function shuffle(array) {
 /*
  * Generate a list of shuffled cards
  */
+
+// String array of card symbols
+let symbols = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor",
+  "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
+
+symbols = symbols.concat(symbols); // adds a copy of each symbol
+const nCards = symbols.length;
+
 // String array of card symbols shuffled
 symbols = shuffle(symbols);
 
-// Apply shuffled order of symbols to cards
+// Apply shuffled order of symbols to card elements
 const cardElements = document.getElementsByClassName('card');
 
 for( let i=0; i<nCards; i++ ) {
@@ -67,12 +68,27 @@ for( let i=0; i<nCards; i++ ) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+// a variable to monitor the number of open cards and their identity
+let openCardIndices = [];
+
+function closeOpenCards() { // pre-condition: openCardIndices.length===2
+  cardElements[openCardIndices.pop()].classList.remove("open", "show");
+  cardElements[openCardIndices.pop()].classList.remove("open", "show");
+} // a for loop here would require more code
+
 for( let i=0; i<nCards; i++ ) {
   cardElements[i].addEventListener('click', function() {
     if(cardElements[i].classList.length===1) {
+      if(openCardIndices.length===2) {
+        closeOpenCards();
+      }
       cardElements[i].classList.add("open", "show");
+      openCardIndices.push(i);
     } else if (cardElements[i].classList.contains("open")) {
       cardElements[i].classList.remove("open", "show");
+      openCardIndices.pop();
     }
+    // console.log(openCardIndices.length); REMOVE LINE
   });
 }
