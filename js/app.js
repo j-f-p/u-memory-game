@@ -72,23 +72,54 @@ for( let i=0; i<nCards; i++ ) {
 // a variable to monitor the number of open cards and their identity
 let openCardIndices = [];
 
-function closeOpenCards() { // pre-condition: openCardIndices.length===2
+function lockOpenMatchingCard(cardIndex) {
+  closeCard(cardIndex); // Thus, a match empties openCardIndices.
+  cardElements[cardIndex].classList.add("match");
+}
+
+function checkForMatch() {
+  if(cardElements[openCardIndices[0]].firstElementChild.className===
+      cardElements[openCardIndices[1]].firstElementChild.className) {
+    lockOpenMatchingCard(openCardIndices[1]);
+    lockOpenMatchingCard(openCardIndices[0]);
+  } // Otherwise, openCardIndices.length remains at 2 and the associated
+}   // cards are distinct. Thus, any time there are 2 open cards at the
+    // start of the click event, those cards are distinct.
+
+function openCard(i) {
+  cardElements[i].classList.add("open", "show");
+  openCardIndices.push(i);
+  // console.log("openCard: "+openCardIndices.length); // REMOVE LINE
+  if(openCardIndices.length===2) { // There are 2 cards open.
+    checkForMatch();
+  }
+}
+
+function closeCard(i) {
+  cardElements[i].classList.remove("open", "show");
+  if(openCardIndices.length===1 || openCardIndices[1]===i)
+    openCardIndices.pop();
+  else { // openCardIndices.length===2 && openCardIndices[0]===i
+    openCardIndices.shift();
+  } // if-else here enables player to close either of two open distinct cards,
+}   // even though this type of move would reduce the player's performance.
+
+function closeDistinctCards() { // pre-condition: openCardIndices.length===2
   cardElements[openCardIndices.pop()].classList.remove("open", "show");
   cardElements[openCardIndices.pop()].classList.remove("open", "show");
-} // a for loop here would require more code
+} // A for loop here would require more code, and thus, be less efficient.
 
 for( let i=0; i<nCards; i++ ) {
   cardElements[i].addEventListener('click', function() {
-    if(cardElements[i].classList.length===1) {
-      if(openCardIndices.length===2) {
-        closeOpenCards();
+    if(cardElements[i].classList.length===1) { // clicked card is closed
+      if(openCardIndices.length===2) { // there are two open distinct cards
+        closeDistinctCards();
       }
-      cardElements[i].classList.add("open", "show");
-      openCardIndices.push(i);
+      openCard(i);
     } else if (cardElements[i].classList.contains("open")) {
-      cardElements[i].classList.remove("open", "show");
-      openCardIndices.pop();
+      // card is open though not matched
+      closeCard(i);
     }
-    // console.log(openCardIndices.length); REMOVE LINE
+    console.log(openCardIndices); // REMOVE LINE
   });
 }
