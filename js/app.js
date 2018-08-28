@@ -1,7 +1,7 @@
-/*
- * When viewport window is smaller than game content, upon page load,
- * scroll view so that game is horizontally centered.
- */
+/* Viewport view ***********************************************************80*/
+// When viewport window is smaller than game content, upon page load,
+// scroll view so that game is horizontally centered.
+
 // document.addEventListener('DOMContentLoaded', function () {
 const windowWidth = window.innerWidth - 17;
 /* 17 px is browswer scroll bar width on Chrome and FireFox.
@@ -37,15 +37,16 @@ function shuffle(array) {
     return array;
 }
 
-/*
- * Generate a list of shuffled cards
- */
+/* HTML Elements ***********************************************************80*/
+
+/* List of shuffled cards - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 // String array of card symbols
 let symbols = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor",
   "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
+const nSymbols = symbols.length;
 
-symbols = symbols.concat(symbols); // adds a copy of each symbol
+symbols = symbols.concat(symbols); // adds a copy of each symbol to form matches
 const nCards = symbols.length;
 
 // String array of card symbols shuffled
@@ -58,6 +59,9 @@ for( let i=0; i<nCards; i++ ) {
   cardElements[i].firstElementChild.className = symbols[i];
 }
 
+/* Move counter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const moveCounter = document.getElementsByClassName('moves')[0];
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -69,9 +73,14 @@ for( let i=0; i<nCards; i++ ) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+/* Game State Variables ****************************************************80*/
+let nOpens = 0; // A game move here equals an opening of a card.
+let nMatches = 0;
+
 // a variable to monitor the number of open cards and their identity
 let openCardIndices = [];
 
+/* Auxiliary functions *****************************************************80*/
 function lockOpenMatchingCard(cardIndex) {
   closeCard(cardIndex); // Thus, a match empties openCardIndices.
   cardElements[cardIndex].classList.add("match");
@@ -82,14 +91,20 @@ function checkForMatch() {
       cardElements[openCardIndices[1]].firstElementChild.className) {
     lockOpenMatchingCard(openCardIndices[1]);
     lockOpenMatchingCard(openCardIndices[0]);
+    nMatches++;
   } // Otherwise, openCardIndices.length remains at 2 and the associated
 }   // cards are distinct. Thus, any time there are 2 open cards at the
     // start of the click event, those cards are distinct.
 
+function incrementMoveCounter() {
+  nOpens++;
+  moveCounter.textContent = nOpens;
+}
+
 function openCard(i) {
   cardElements[i].classList.add("open", "show");
   openCardIndices.push(i);
-  // console.log("openCard: "+openCardIndices.length); // REMOVE LINE
+  incrementMoveCounter();
   if(openCardIndices.length===2) { // There are 2 cards open.
     checkForMatch();
   }
@@ -109,6 +124,7 @@ function closeDistinctCards() { // pre-condition: openCardIndices.length===2
   cardElements[openCardIndices.pop()].classList.remove("open", "show");
 } // A for loop here would require more code, and thus, be less efficient.
 
+/* Event listeners *********************************************************80*/
 for( let i=0; i<nCards; i++ ) {
   cardElements[i].addEventListener('click', function() {
     if(cardElements[i].classList.length===1) { // clicked card is closed
@@ -120,6 +136,6 @@ for( let i=0; i<nCards; i++ ) {
       // card is open though not matched
       closeCard(i);
     }
-    console.log(openCardIndices); // REMOVE LINE
+    // console.log(openCardIndices); // REMOVE LINE
   });
 }
