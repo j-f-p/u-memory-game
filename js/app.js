@@ -62,6 +62,9 @@ for( let i=0; i<nCards; i++ ) {
 /* Move counter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const moveCounter = document.getElementsByClassName('moves')[0];
 
+/* Stars  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const starsList = document.getElementsByClassName('stars')[0];
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -75,6 +78,7 @@ const moveCounter = document.getElementsByClassName('moves')[0];
 
 /* Game State Variables ****************************************************80*/
 let nOpens = 0; // A game move here equals an opening of a card.
+let nStars = 3; // Player performance is initialized at best possible value.
 let nMatches = 0;
 
 // a variable to monitor the number of open cards and their identity
@@ -99,6 +103,10 @@ function checkForMatch() {
 function incrementMoveCounter() {
   nOpens++;
   moveCounter.textContent = nOpens;
+  if(nOpens>23 && (nOpens-24)%4===0 && starsList.childElementCount>0) {
+    // Remove star when nOpens is 24, 28 and 32.
+    starsList.removeChild(starsList.lastElementChild);
+  }
 }
 
 function openCard(i) {
