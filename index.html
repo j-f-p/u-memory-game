@@ -16,15 +16,21 @@
         </header>
 
         <section class="score-panel">
-          <ul class="stars">
+          <ul class="starsField">
             <li><i class="fa fa-star"></i></li>
             <li><i class="fa fa-star"></i></li>
             <li><i class="fa fa-star"></i></li>
-          </ul>
+          </ul><!-- These comments preempt whitespace-only text nodes.
 
-          <span class="moves">0</span> <span>Moves</span>
+       --><div class="movesField">
+            <span>Moves: </span><span class="moves">0</span>
+          </div><!--
 
-          <div class="restart">
+       --><div class="timerField">
+            <span>Time [s]: </span><span class="timer">0</span>
+          </div><!--
+
+       --><div class="resetField">
             <i class="fa fa-repeat"></i>
           </div>
         </section>

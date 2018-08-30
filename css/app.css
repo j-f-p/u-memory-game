@@ -84,24 +84,35 @@ header > h1 {
  */
 
 .score-panel {
-    text-align: left;
     width: 320px;
     margin: 0 auto 10px;
 }
 
-.score-panel .stars {
+.starsField {
+    width: 80px; /* contains all stars */
     margin: 0;
-    padding: 0;
+    padding-left: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
 }
 
-.score-panel .stars li {
+.starsField > li {
     list-style: none;
     display: inline-block;
 }
 
-.score-panel .restart {
-    float: right;
+.movesField {
+    display: inline-block;
+    width: 80px;
+}
+
+.timerField {
+    display: inline-block;
+    width: 140px;
+}
+
+.resetField {
+    display: inline-block;
+    width: 20px;
+    text-align: right;
     cursor: pointer;
 }

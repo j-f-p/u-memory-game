@@ -59,11 +59,14 @@ for( let i=0; i<nCards; i++ ) {
   cardElements[i].firstElementChild.className = symbols[i];
 }
 
-/* Move counter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Star rating  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const starsList = document.getElementsByClassName('starsField')[0];
+
+/* Move count - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const moveCounter = document.getElementsByClassName('moves')[0];
 
-/* Star rating  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const starsList = document.getElementsByClassName('stars')[0];
+/* Elapsed time in seconds- - - - - - - - - - - - - - - - - - - - - - - - - - */
+const timerElement = document.getElementsByClassName('timer')[0];
 
 /* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const resetIcon = document.getElementsByClassName('fa fa-repeat')[0];
@@ -154,3 +157,9 @@ for( let i=0; i<nCards; i++ ) {
 resetIcon.addEventListener('click', function() {
   window.location.reload();
 })
+
+/* Timer *******************************************************************80*/
+let start = new Date().getTime();
+window.setInterval(function() {
+  timerElement.textContent = Math.floor( (new Date().getTime() - start) / 1000);
+}, 1000);
