@@ -62,8 +62,11 @@ for( let i=0; i<nCards; i++ ) {
 /* Move counter - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const moveCounter = document.getElementsByClassName('moves')[0];
 
-/* Stars  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Star rating  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const starsList = document.getElementsByClassName('stars')[0];
+
+/* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const resetIcon = document.getElementsByClassName('fa fa-repeat')[0];
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -147,3 +150,7 @@ for( let i=0; i<nCards; i++ ) {
     // console.log(openCardIndices); // REMOVE LINE
   });
 }
+
+resetIcon.addEventListener('click', function() {
+  window.location.reload();
+})
