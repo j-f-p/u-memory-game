@@ -21,12 +21,13 @@ body {
     margin: 0;
     font-family: 'Coda', cursive;
     /* Background pattern from Subtle Patterns */
-    background: #ffffff url('../img/geometry2.png');
+    background: #ffffff url(../img/geometry2.png);
     background-attachment: fixed;
 }
 
-header > h1 {
-    font-family: 'Open Sans', sans-serif;
+header > h1,
+.modal > h1 {
+    font-family: "Open Sans", sans-serif;
     font-weight: 300;
     text-align: center;
 }
@@ -54,7 +55,7 @@ header > h1 {
     width: 125px;
     background: #2e3d49;
     font-size: 0;
-    color: #ffffff;
+    color: #fff;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
@@ -88,8 +89,11 @@ header > h1 {
     margin: 0 auto 10px;
 }
 
-.starsField {
+.score-panel > .starsField {
     width: 80px; /* contains all stars */
+}
+
+.starsField {
     margin: 0;
     padding-left: 0;
     display: inline-block;
@@ -115,4 +119,51 @@ header > h1 {
     width: 20px;
     text-align: right;
     cursor: pointer;
+}
+
+.modal {
+  position: fixed;
+  width: 480px;
+  height: 480px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border-radius: 10px;
+  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+  box-shadow: 10px 13px 18px 0 rgba(46, 61, 73, 0.5);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal > h1 {
+  margin: 0;
+}
+
+.modal .big { /* jumbo award symbol */
+  font-size: 80px;
+}
+
+.modalResetField {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #02ccba;
+  background-color: #2e3d49;
+  border-radius: 10px;
+  text-align: center; /* center text horizontally */
+  line-height: 32px;  /* center text vertically */
+}
+
+.modalResetField:hover { /* highlight reset button */
+  color: white;
+  background-color: black;
+}
+
+.modal > .starsField .fas {
+  font-size: 48px;
 }

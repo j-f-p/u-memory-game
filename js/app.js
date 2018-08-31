@@ -37,13 +37,21 @@ function shuffle(array) {
     return array;
 }
 
+/* Game State Variables ****************************************************80*/
+let nOpens = 0; // A game move here equals an opening of a card.
+let nStars = 3; // Player performance is initialized at best possible value.
+let nMatches = 0;
+
+// a variable to monitor the number of open cards and their identity
+let openCardIndices = [];
+
 /* HTML Elements ***********************************************************80*/
 
 /* List of shuffled cards - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 // String array of card symbols
-let symbols = ["fa fa-diamond", "fa fa-paper-plane-o", "fa fa-anchor",
-  "fa fa-bolt", "fa fa-cube", "fa fa-leaf", "fa fa-bicycle", "fa fa-bomb"];
+let symbols = ["fas fa-gem", "fas fa-paper-plane", "fas fa-anchor",
+  "fas fa-bolt", "fas fa-cube", "fas fa-leaf", "fas fa-bicycle", "fas fa-bomb"];
 const nSymbols = symbols.length;
 
 symbols = symbols.concat(symbols); // adds a copy of each symbol to form matches
@@ -69,7 +77,27 @@ const moveCounter = document.getElementsByClassName('moves')[0];
 const timerElement = document.getElementsByClassName('seconds')[0];
 
 /* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const resetIcon = document.getElementsByClassName('fa fa-repeat')[0];
+const resetIcon = document.getElementsByClassName('fas fa-redo-alt')[0];
+
+// TODO: place modal within an event listener
+  const endModal = document.createElement('div');
+  endModal.className="modal";
+  endModal.innerHTML =
+   `<h1><i class="big fas fa-award"></i></h1>
+    <h1>Matches Completed!</h1>
+    <ul class="starsField">
+      <li><i class="fas fa-star"></i></li>
+      <li><i class="fas fa-star"></i></li>
+      <li><i class="fas fa-star"></i></li>
+    </ul>
+    <h1>${nOpens} moves</h1>
+    <h1>
+      in ${timerElement.textContent} sec
+    </h1>
+    <div class="modalResetField">
+      <i class="fas fa-redo-alt"></i>
+    </div>`;
+  document.getElementsByTagName('body')[0].appendChild(endModal);
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -81,14 +109,6 @@ const resetIcon = document.getElementsByClassName('fa fa-repeat')[0];
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
-/* Game State Variables ****************************************************80*/
-let nOpens = 0; // A game move here equals an opening of a card.
-let nStars = 3; // Player performance is initialized at best possible value.
-let nMatches = 0;
-
-// a variable to monitor the number of open cards and their identity
-let openCardIndices = [];
 
 /* Auxiliary functions *****************************************************80*/
 function endGame() {
