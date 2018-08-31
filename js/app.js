@@ -66,7 +66,7 @@ const starsList = document.getElementsByClassName('starsField')[0];
 const moveCounter = document.getElementsByClassName('moves')[0];
 
 /* Elapsed time in seconds- - - - - - - - - - - - - - - - - - - - - - - - - - */
-const timerElement = document.getElementsByClassName('timer')[0];
+const timerElement = document.getElementsByClassName('seconds')[0];
 
 /* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const resetIcon = document.getElementsByClassName('fa fa-repeat')[0];
@@ -91,6 +91,10 @@ let nMatches = 0;
 let openCardIndices = [];
 
 /* Auxiliary functions *****************************************************80*/
+function endGame() {
+  window.clearInterval(timer);
+}
+
 function lockOpenMatchingCard(cardIndex) {
   closeCard(cardIndex); // Thus, a match empties openCardIndices.
   cardElements[cardIndex].classList.add("match");
@@ -102,6 +106,9 @@ function checkForMatch() {
     lockOpenMatchingCard(openCardIndices[1]);
     lockOpenMatchingCard(openCardIndices[0]);
     nMatches++;
+    if(nMatches===nSymbols){ // The game objective is achieved.
+      endGame();
+    }
   } // Otherwise, openCardIndices.length remains at 2 and the associated
 }   // cards are distinct. Thus, any time there are 2 open cards at the
     // start of the click event, those cards are distinct.
@@ -115,15 +122,6 @@ function incrementMoveCounter() {
   }
 }
 
-function openCard(i) {
-  cardElements[i].classList.add("open", "show");
-  openCardIndices.push(i);
-  incrementMoveCounter();
-  if(openCardIndices.length===2) { // There are 2 cards open.
-    checkForMatch();
-  }
-}
-
 function closeCard(i) {
   cardElements[i].classList.remove("open", "show");
   if(openCardIndices.length===1 || openCardIndices[1]===i)
@@ -132,6 +130,15 @@ function closeCard(i) {
     openCardIndices.shift();
   } // if-else here enables player to close either of two open distinct cards,
 }   // even though this type of move would reduce the player's performance.
+
+function openCard(i) {
+  cardElements[i].classList.add("open", "show");
+  openCardIndices.push(i);
+  incrementMoveCounter();
+  if(openCardIndices.length===2) { // There are 2 cards open.
+    checkForMatch();
+  }
+}
 
 function closeDistinctCards() { // pre-condition: openCardIndices.length===2
   cardElements[openCardIndices.pop()].classList.remove("open", "show");
@@ -160,6 +167,6 @@ resetIcon.addEventListener('click', function() {
 
 /* Timer *******************************************************************80*/
 let start = new Date().getTime();
-window.setInterval(function() {
+const timer = window.setInterval(function() {
   timerElement.textContent = Math.floor( (new Date().getTime() - start) / 1000);
 }, 1000);
