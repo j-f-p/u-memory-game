@@ -110,7 +110,7 @@ function popUpEndModal() {
     <h1>
       in ${timerElement.textContent} sec
     </h1>
-    <div class="modalResetField">
+    <div class="modalResetField" title="Play again?">
       <i class="fas fa-redo-alt"></i>
     </div>`;
 
