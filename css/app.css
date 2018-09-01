@@ -2,6 +2,7 @@
 *::before,
 *::after {
     box-sizing: inherit;
+    cursor: default;
 }
 
 html {
@@ -19,9 +20,9 @@ html {
 
 body {
     margin: 0;
-    font-family: 'Coda', cursive;
+    font-family: "Coda", cursive;
     /* Background pattern from Subtle Patterns */
-    background: #ffffff url(../img/geometry2.png);
+    background: #fff url(../img/geometry2.png);
     background-attachment: fixed;
 }
 
@@ -32,15 +33,23 @@ header > h1,
     text-align: center;
 }
 
+header > h1 {
+    /* By design, set equal vertical margin between window top, title, score
+     * panel and deck. */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 /*
  * Styles for the deck of cards
  */
 
 .deck {
     width: var(--deck-width);
-    min-height: 680px;
+    height: var(--deck-width);
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
+    /* Account for flexbox spacing to equalize apparent padding. */
+    padding: 16px 32px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
     display: flex;
@@ -86,6 +95,8 @@ header > h1,
 
 .score-panel {
     width: 320px;
+    height: 32px;
+    line-height: 32px; /* = height to vertically center text in score-panel */
     margin: 0 auto 10px;
 }
 
@@ -111,59 +122,70 @@ header > h1,
 
 .timerField {
     display: inline-block;
-    width: 140px;
+    width: 128px; /* sum of field widths = score-panel width */
 }
 
 .resetField {
     display: inline-block;
-    width: 20px;
-    text-align: right;
-    cursor: pointer;
+    width: 32px; /* width = height to create a circular border */
+    border-radius: 16px;
+    text-align: center;
+}
+
+.resetField:hover {
+    color: white;
+    background-color: black;
+}
+
+.resetFieldInactive {
+    display: inline-block;
+    width: 32px;
+    text-align: center;
 }
 
 .modal {
-  position: fixed;
-  width: 480px;
-  height: 480px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  border-radius: 10px;
-  background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-  box-shadow: 10px 13px 18px 0 rgba(46, 61, 73, 0.5);
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+    position: fixed;
+    width: 480px;
+    height: 480px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 10px;
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    box-shadow: 10px 13px 18px 0 rgba(46, 61, 73, 0.5);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modal > h1 {
-  margin: 0;
+    margin: 0;
 }
 
 .modal .big { /* jumbo award symbol */
-  font-size: 80px;
+    font-size: 80px;
 }
 
 .modalResetField {
-  width: 32px;
-  height: 32px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: #02ccba;
-  background-color: #2e3d49;
-  border-radius: 10px;
-  text-align: center; /* center text horizontally */
-  line-height: 32px;  /* center text vertically */
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #02ccba;
+    background-color: #2e3d49;
+    border-radius: 10px;
+    text-align: center; /* center text horizontally */
+    line-height: 32px;  /* center text vertically by line-height = height */
 }
 
 .modalResetField:hover { /* highlight reset button */
-  color: white;
-  background-color: black;
+    color: white;
+    background-color: black;
 }
 
 .modal > .starsField .fas {
-  font-size: 48px;
+    font-size: 48px;
 }

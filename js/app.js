@@ -2,17 +2,17 @@
 // When viewport window is smaller than game content, upon page load,
 // scroll view so that game is horizontally centered.
 
-// document.addEventListener('DOMContentLoaded', function () {
-const windowWidth = window.innerWidth - 17;
-/* 17 px is browswer scroll bar width on Chrome and FireFox.
-   TODO: This correction should be automatically determined. Touch screen
-   mode without scroll bars should not have a correction. */
-const deckWidth =
-  document.getElementsByClassName('deck')[0].getBoundingClientRect().width;
-if( windowWidth < deckWidth ) {
-  window.scroll( (deckWidth - windowWidth)/2, 0);
-}
-// });
+document.addEventListener('DOMContentLoaded', function () {
+  const windowWidth = window.innerWidth - 17;
+  /* 17 px is browswer scroll bar width on Chrome and FireFox.
+     TODO: This correction should be automatically determined. Touch screen
+     mode without scroll bars should not have a correction. */
+  const deckWidth =
+    document.getElementsByClassName('deck')[0].getBoundingClientRect().width;
+  if( windowWidth < deckWidth ) {
+    window.scroll( (deckWidth - windowWidth)/2, 0);
+  }
+});
 
 /*
  * Display the cards on the page
@@ -77,27 +77,7 @@ const moveCounter = document.getElementsByClassName('moves')[0];
 const timerElement = document.getElementsByClassName('seconds')[0];
 
 /* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const resetIcon = document.getElementsByClassName('fas fa-redo-alt')[0];
-
-// TODO: place modal within an event listener
-  const endModal = document.createElement('div');
-  endModal.className="modal";
-  endModal.innerHTML =
-   `<h1><i class="big fas fa-award"></i></h1>
-    <h1>Matches Completed!</h1>
-    <ul class="starsField">
-      <li><i class="fas fa-star"></i></li>
-      <li><i class="fas fa-star"></i></li>
-      <li><i class="fas fa-star"></i></li>
-    </ul>
-    <h1>${nOpens} moves</h1>
-    <h1>
-      in ${timerElement.textContent} sec
-    </h1>
-    <div class="modalResetField">
-      <i class="fas fa-redo-alt"></i>
-    </div>`;
-  document.getElementsByTagName('body')[0].appendChild(endModal);
+const resetFromGame = document.getElementsByClassName('resetField')[0];
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -111,8 +91,46 @@ const resetIcon = document.getElementsByClassName('fas fa-redo-alt')[0];
  */
 
 /* Auxiliary functions *****************************************************80*/
+const resetFunction = function() {
+  window.location.reload(); // reload page
+}
+
+function popUpEndModal() {
+  // define modal
+  const endModal = document.createElement('div');
+  endModal.className="modal";
+
+  endModal.innerHTML =
+   `<h1><i class="big fas fa-award"></i></h1>
+    <h1>Matches Completed!</h1>
+    <ul class="starsField">
+      ${starsList.innerHTML}
+    </ul>
+    <h1>${nOpens} moves</h1>
+    <h1>
+      in ${timerElement.textContent} sec
+    </h1>
+    <div class="modalResetField">
+      <i class="fas fa-redo-alt"></i>
+    </div>`;
+
+  // render modal
+  document.getElementsByTagName('body')[0].appendChild(endModal);
+
+  // activate in-modal reset button
+  document.getElementsByClassName('modalResetField')[0].addEventListener(
+    'click', resetFunction
+  );
+}
+
 function endGame() {
-  window.clearInterval(timer);
+  window.clearInterval(timer); // stop the timer
+
+  // deactivate in-game reset button
+  resetFromGame.removeEventListener('click', resetFunction);
+  resetFromGame.classList.replace('resetField', 'resetFieldInactive');
+
+  popUpEndModal();
 }
 
 function lockOpenMatchingCard(cardIndex) {
@@ -136,8 +154,8 @@ function checkForMatch() {
 function incrementMoveCounter() {
   nOpens++;
   moveCounter.textContent = nOpens;
-  if(nOpens>23 && (nOpens-24)%4===0 && starsList.childElementCount>0) {
-    // Remove star when nOpens is 24, 28 and 32.
+  if(nOpens>23 && (nOpens-24)%4===0 && starsList.childElementCount>1) {
+    // Remove star when nOpens is 24 and 28. By requirement, 1 star must remain.
     starsList.removeChild(starsList.lastElementChild);
   }
 }
@@ -165,7 +183,7 @@ function closeDistinctCards() { // pre-condition: openCardIndices.length===2
   cardElements[openCardIndices.pop()].classList.remove("open", "show");
 } // A for loop here would require more code, and thus, be less efficient.
 
-/* Event listeners *********************************************************80*/
+/* Game-Play Event listeners ***********************************************80*/
 for( let i=0; i<nCards; i++ ) {
   cardElements[i].addEventListener('click', function() {
     if(cardElements[i].classList.length===1) { // clicked card is closed
@@ -181,11 +199,9 @@ for( let i=0; i<nCards; i++ ) {
   });
 }
 
-resetIcon.addEventListener('click', function() {
-  window.location.reload();
-})
+resetFromGame.addEventListener('click', resetFunction);
 
-/* Timer *******************************************************************80*/
+/* Timer: a basic timer that counts up seconds *****************************80*/
 let start = new Date().getTime();
 const timer = window.setInterval(function() {
   timerElement.textContent = Math.floor( (new Date().getTime() - start) / 1000);
