@@ -1,7 +1,7 @@
 ## Matching Game Project
 
 ### Abstract
-This a browser game project initialized from a starter project from a Udacity web development course. It is a fixed-view single-player game involving a rectangular grid of cards. 
+This a browser game project for Section 3 of the Udacity Front-End Web Development Nanodegree. It is a fixed-view single-player game involving a rectangular grid of cards. 
 
 ### Environment and Technical Features
 The game is built with HTML, CSS and JavaScript. It has been tested with Chrome and FireFox, and their respective device and responsiveness tools. The game involves a single view with event listeners, a score panel and a modal.
