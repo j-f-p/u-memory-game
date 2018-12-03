@@ -130,6 +130,9 @@ function endGame() {
   resetFromGame.removeEventListener('click', resetFunction);
   resetFromGame.classList.replace('resetField', 'resetFieldInactive');
 
+  // remove tooltip about in-game reset button
+  resetFromGame.removeAttribute('title');
+
   popUpEndModal();
 }
 
