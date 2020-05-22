@@ -67,6 +67,10 @@ for( let i=0; i<nCards; i++ ) {
   cardElements[i].firstElementChild.className = symbols[i];
 }
 
+/* Empty star element - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const emptyStar = document.createElement('li');
+emptyStar.innerHTML = `<i class="far fa-star"></i>`
+
 /* Star rating  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const starsList = document.getElementsByClassName('starsField')[0];
 
@@ -157,9 +161,16 @@ function checkForMatch() {
 function incrementMoveCounter() {
   nOpens++;
   moveCounter.textContent = nOpens;
-  if(nOpens>23 && (nOpens-24)%4===0 && starsList.childElementCount>1) {
-    // Remove star when nOpens is 24 and 28. By requirement, 1 star must remain.
+  // Remove star when nOpens is 24 and 28. By requirement, 1 star must remain.
+  if(nOpens===24) {
     starsList.removeChild(starsList.lastElementChild);
+    starsList.appendChild(emptyStar);
+  } else if(nOpens===28) {
+    starsList.removeChild(starsList.lastElementChild);
+    starsList.removeChild(starsList.lastElementChild);
+    starsList.appendChild(emptyStar);
+    starsList.appendChild(document.createTextNode(' '));
+    starsList.appendChild(emptyStar.cloneNode(true));
   }
 }
 

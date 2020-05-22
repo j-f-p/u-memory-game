@@ -180,6 +180,7 @@ header > h1 {
     background-color: black;
 }
 
-.modal > .starsField .fas {
+.modal > .starsField .fas,
+.modal > .starsField .far {
     font-size: 48px;
 }
