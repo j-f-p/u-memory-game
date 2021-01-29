@@ -94,8 +94,11 @@ header > h1 {
     margin: 0 auto 10px;
 }
 
-.score-panel > .starsField {
-    width: 80px; /* contains all stars */
+.score-panel > .emptyField {
+    width: 80px; /* score-panel centered about moves and timer fields */
+    margin: 0;
+    padding-left: 0;
+    display: inline-block;
 }
 
 .starsField {

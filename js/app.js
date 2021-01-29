@@ -39,6 +39,7 @@ function shuffle(array) {
 
 /* Game State Variables ****************************************************80*/
 let nOpens = 0; // A game move here equals an opening of a card.
+const nStarsMax = 3;
 let nStars = 3; // Player performance is initialized at best possible value.
 let nMatches = 0;
 
@@ -52,7 +53,7 @@ let openCardIndices = [];
 // String array of card symbols
 let symbols = ["fas fa-gem", "fas fa-paper-plane", "fas fa-anchor",
   "fas fa-bolt", "fas fa-cube", "fas fa-leaf", "fas fa-bicycle", "fas fa-bomb"];
-const nSymbols = symbols.length;
+const nSymbols = 1; //symbols.length;
 
 symbols = symbols.concat(symbols); // adds a copy of each symbol to form matches
 const nCards = symbols.length;
@@ -67,12 +68,17 @@ for( let i=0; i<nCards; i++ ) {
   cardElements[i].firstElementChild.className = symbols[i];
 }
 
-/* Empty star element - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Star - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const star = document.createElement('li');
+star.innerHTML = `<i class="fas fa-star"></i>`
+
+/* Empty star - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const emptyStar = document.createElement('li');
 emptyStar.innerHTML = `<i class="far fa-star"></i>`
 
 /* Star rating  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const starsList = document.getElementsByClassName('starsField')[0];
+const starsList = document.createElement('ul');
+starsList.classList.add("starsField");
 
 /* Move count - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const moveCounter = document.getElementsByClassName('moves')[0];
@@ -107,9 +113,7 @@ function popUpEndModal() {
   endModal.innerHTML =
    `<h1><i class="big fas fa-award"></i></h1>
     <h1>Matches Completed!</h1>
-    <ul class="starsField">
-      ${starsList.innerHTML}
-    </ul>
+    ${starsList.outerHTML}
     <h1>${nOpens} moves</h1>
     <h1>
       in ${timerElement.textContent} sec
@@ -127,6 +131,19 @@ function popUpEndModal() {
   );
 }
 
+function buildStarsList() {
+  let nEmptyStars = nStarsMax - nStars;
+  starsList.appendChild(star);
+  for( let i=1; i<nStars; i++ ) {
+    starsList.appendChild(document.createTextNode(' '));
+    starsList.appendChild(star.cloneNode(true));
+  }
+  for( let i=0; i<nEmptyStars; i++ ) {
+    starsList.appendChild(document.createTextNode(' '));
+    starsList.appendChild(emptyStar.cloneNode(true));
+  }
+}
+
 function endGame() {
   window.clearInterval(timer); // stop the timer
 
@@ -137,6 +154,7 @@ function endGame() {
   // remove tooltip about in-game reset button
   resetFromGame.removeAttribute('title');
 
+  buildStarsList();
   popUpEndModal();
 }
 
@@ -162,16 +180,10 @@ function incrementMoveCounter() {
   nOpens++;
   moveCounter.textContent = nOpens;
   // Remove star when nOpens is 24 and 28. By requirement, 1 star must remain.
-  if(nOpens===24) {
-    starsList.removeChild(starsList.lastElementChild);
-    starsList.appendChild(emptyStar);
-  } else if(nOpens===28) {
-    starsList.removeChild(starsList.lastElementChild);
-    starsList.removeChild(starsList.lastElementChild);
-    starsList.appendChild(emptyStar);
-    starsList.appendChild(document.createTextNode(' '));
-    starsList.appendChild(emptyStar.cloneNode(true));
-  }
+  if(nOpens===8)
+    nStars--;
+  else if(nOpens===12)
+    nStars--;
 }
 
 function closeCard(i) {
@@ -205,6 +217,7 @@ for( let i=0; i<nCards; i++ ) {
         closeDistinctCards();
       }
       openCard(i);
+      console.log(nStars);
     } else if (cardElements[i].classList.contains("open")) {
       // card is open though not matched
       closeCard(i);
