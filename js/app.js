@@ -84,7 +84,7 @@ starsList.classList.add("starsField");
 const moveCounter = document.getElementsByClassName('moves')[0];
 
 /* Elapsed time in seconds- - - - - - - - - - - - - - - - - - - - - - - - - - */
-const timerElement = document.getElementsByClassName('seconds')[0];
+const timerElement = document.getElementsByClassName('digitalTime')[0];
 
 /* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const resetFromGame = document.getElementsByClassName('resetField')[0];
@@ -106,6 +106,14 @@ const resetFunction = function() {
 }
 
 function popUpEndModal() {
+  // determine digital clock display for representing spent time
+  count++; // Undo count offset: let count = initialSecondsCount - 1;
+  const secondsSpent = initialSecondsCount - count;
+  const clockMinutes = Math.floor(secondsSpent / 60);
+  let clockSeconds = secondsSpent % 60;
+  clockSeconds = clockSeconds < 10 ? "0" + clockSeconds : clockSeconds;
+  const digitalClock = clockMinutes + ":" + clockSeconds;
+
   // define modal
   const endModal = document.createElement('div');
   endModal.className="modal";
@@ -116,7 +124,7 @@ function popUpEndModal() {
     ${starsList.outerHTML}
     <h1>${nOpens} moves</h1>
     <h1>
-      in ${timerElement.textContent} sec
+      in ${digitalClock} [m:ss]
     </h1>
     <div class="modalResetField" title="Play again?">
       <i class="fas fa-redo-alt"></i>
@@ -229,18 +237,19 @@ for( let i=0; i<nCards; i++ ) {
 resetFromGame.addEventListener('click', resetFunction);
 
 /* Timer: a basic timer that counts down seconds ***************************80*/
-const initialSecondsCount = 10;
+const initialSecondsCount = 5;
+let minutes = Math.floor(initialSecondsCount / 60);
+let seconds = initialSecondsCount % 60;
+seconds = seconds < 10 ? "0" + seconds : seconds;
+timerElement.textContent = minutes + ":" + seconds;
+
 let count = initialSecondsCount - 1;
 const timer = window.setInterval(function() {
-  let minutes, seconds;
   minutes = Math.floor(count / 60);
   seconds = count % 60;
-
-  minutes = minutes < 10 ? minutes : minutes;
   seconds = seconds < 10 ? "0" + seconds : seconds;
 
   timerElement.textContent = minutes + ":" + seconds;
 
-  if (--count < 0)
-    count = initialSecondsCount;
+  if (count-- === 0) endGame();
 }, 1000);
