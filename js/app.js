@@ -228,8 +228,19 @@ for( let i=0; i<nCards; i++ ) {
 
 resetFromGame.addEventListener('click', resetFunction);
 
-/* Timer: a basic timer that counts up seconds *****************************80*/
-let start = new Date().getTime();
+/* Timer: a basic timer that counts down seconds ***************************80*/
+const initialSecondsCount = 10;
+let count = initialSecondsCount - 1;
 const timer = window.setInterval(function() {
-  timerElement.textContent = Math.floor( (new Date().getTime() - start) / 1000);
+  let minutes, seconds;
+  minutes = Math.floor(count / 60);
+  seconds = count % 60;
+
+  minutes = minutes < 10 ? minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  timerElement.textContent = minutes + ":" + seconds;
+
+  if (--count < 0)
+    count = initialSecondsCount;
 }, 1000);
