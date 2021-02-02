@@ -53,7 +53,7 @@ let openCardIndices = [];
 // String array of card symbols
 let symbols = ["fas fa-gem", "fas fa-paper-plane", "fas fa-anchor",
   "fas fa-bolt", "fas fa-cube", "fas fa-leaf", "fas fa-bicycle", "fas fa-bomb"];
-const nSymbols = 1; //symbols.length;
+const nSymbols = 2; //symbols.length;
 
 symbols = symbols.concat(symbols); // adds a copy of each symbol to form matches
 const nCards = symbols.length;
@@ -105,7 +105,42 @@ const resetFunction = function() {
   window.location.reload(); // reload page
 }
 
-function popUpEndModal() {
+function showTimeUpEndModal() {
+  // set singular or plural word depending on its associated quantity's value
+  const matchWord = nMatches===1 ? "match" : "matches";
+  const moveWord = nOpens===1 ? "move" : "moves";
+
+  // define modal
+  const endModal = document.createElement('div');
+  endModal.className="modal";
+
+  endModal.innerHTML =
+   `<h1><i class="big fas fa-hourglass-end"></i></h1>
+    <h1>Time's up!</h1>
+    ${starsList.outerHTML}
+    <h1>${nMatches} ${matchWord}<br>in ${nOpens} ${moveWord}</h1>
+    <div class="modalResetField" title="Play again?">
+      <i class="fas fa-redo-alt"></i>
+    </div>`;
+
+  // render modal
+  document.getElementsByTagName('body')[0].appendChild(endModal);
+
+  // activate in-modal reset button
+  document.getElementsByClassName('modalResetField')[0].addEventListener(
+    'click', resetFunction
+  );
+}
+
+function buildEmptyStars() {
+  starsList.appendChild(emptyStar);
+  for( let i=1; i<nStarsMax; i++ ) {
+    starsList.appendChild(document.createTextNode(' '));
+    starsList.appendChild(emptyStar.cloneNode(true));
+  }
+}
+
+function showMeritEndModal() {
   // determine digital clock display for representing spent time
   count++; // Undo count offset: let count = initialSecondsCount - 1;
   const secondsSpent = initialSecondsCount - count;
@@ -122,10 +157,7 @@ function popUpEndModal() {
    `<h1><i class="big fas fa-award"></i></h1>
     <h1>Matches Completed!</h1>
     ${starsList.outerHTML}
-    <h1>${nOpens} moves</h1>
-    <h1>
-      in ${digitalClock} [m:ss]
-    </h1>
+    <h1>${nOpens} moves<br>in ${digitalClock} [m:ss]</h1>
     <div class="modalResetField" title="Play again?">
       <i class="fas fa-redo-alt"></i>
     </div>`;
@@ -162,8 +194,14 @@ function endGame() {
   // remove tooltip about in-game reset button
   resetFromGame.removeAttribute('title');
 
-  buildStarsList();
-  popUpEndModal();
+  if(count>-1) {
+    buildStarsList();
+    showMeritEndModal();
+  }
+  else {
+    buildEmptyStars();
+    showTimeUpEndModal();
+  }
 }
 
 function lockOpenMatchingCard(cardIndex) {
