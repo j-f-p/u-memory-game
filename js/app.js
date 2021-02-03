@@ -140,6 +140,29 @@ function buildEmptyStars() {
   }
 }
 
+function showTopMeritEndModal() {
+  // determine digital clock display for representing spent time
+  count++; // Undo count offset: let count = initialSecondsCount - 1;
+  const secondsSpent = initialSecondsCount - count;
+  const clockMinutes = Math.floor(secondsSpent / 60);
+  let clockSeconds = secondsSpent % 60;
+  clockSeconds = clockSeconds < 10 ? "0" + clockSeconds : clockSeconds;
+  const digitalClock = clockMinutes + ":" + clockSeconds;
+
+  // define modal
+  const endModal = document.createElement('div');
+  endModal.className="modal";
+
+  endModal.innerHTML =
+   `<h1><i class="big fas fa-medal"></i></h1>
+    <h1>You've achieved mastery!</h1>
+    ${starsList.outerHTML}
+    <h1>${nOpens} moves<br>in ${digitalClock} [m:ss]</h1>`;
+
+  // render modal
+  document.getElementsByTagName('body')[0].appendChild(endModal);
+}
+
 function showMeritEndModal() {
   // determine digital clock display for representing spent time
   count++; // Undo count offset: let count = initialSecondsCount - 1;
@@ -196,7 +219,10 @@ function endGame() {
 
   if(count>-1) {
     buildStarsList();
-    showMeritEndModal();
+    if(nStars<nStarsMax)
+      showMeritEndModal();
+    else
+      showTopMeritEndModal();
   }
   else {
     buildEmptyStars();
@@ -226,9 +252,9 @@ function incrementMoveCounter() {
   nOpens++;
   moveCounter.textContent = nOpens;
   // Remove star when nOpens is 24 and 28. By requirement, 1 star must remain.
-  if(nOpens===8)
+  if(nOpens===12)
     nStars--;
-  else if(nOpens===12)
+  else if(nOpens===16)
     nStars--;
 }
 
@@ -275,7 +301,7 @@ for( let i=0; i<nCards; i++ ) {
 resetFromGame.addEventListener('click', resetFunction);
 
 /* Timer: a basic timer that counts down seconds ***************************80*/
-const initialSecondsCount = 5;
+const initialSecondsCount = 20;
 let minutes = Math.floor(initialSecondsCount / 60);
 let seconds = initialSecondsCount % 60;
 seconds = seconds < 10 ? "0" + seconds : seconds;
