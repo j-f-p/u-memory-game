@@ -242,6 +242,13 @@ function checkForMatch() {
     lockOpenMatchingCard(openCardIndices[0]);
     nMatches++;
     if(nMatches===nSymbols){ // The game objective is achieved.
+      // When matches compeleted in nOpens<25, remove star if time left < 21 s.
+        console.log(count);
+      if( nOpens<28 && count<60 ) { // derived from non-offset: count + 1 < 21
+        nStars--; // Mastery (3 stars) requires completion with count + 1 > 20.
+        console.log("not perfect");
+        console.log(count);
+      }
       endGame();
     }
   } // Otherwise, openCardIndices.length remains at 2 and the associated
@@ -251,10 +258,12 @@ function checkForMatch() {
 function incrementMoveCounter() {
   nOpens++;
   moveCounter.textContent = nOpens;
-  // Remove star when nOpens is 24 and 28. By requirement, 1 star must remain.
-  if(nOpens===12)
+  // Remove star when nOpens is 25 and 29. Completion earns at least 1 star.
+  if(nOpens===28) {
     nStars--;
-  else if(nOpens===16)
+    console.log("whoah");
+  }
+  else if(nOpens===29)
     nStars--;
 }
 
@@ -289,19 +298,17 @@ for( let i=0; i<nCards; i++ ) {
         closeDistinctCards();
       }
       openCard(i);
-      console.log(nStars);
     } else if (cardElements[i].classList.contains("open")) {
       // card is open though not matched
       closeCard(i);
     }
-    // console.log(openCardIndices); // REMOVE LINE
   });
 }
 
 resetFromGame.addEventListener('click', resetFunction);
 
 /* Timer: a basic timer that counts down seconds ***************************80*/
-const initialSecondsCount = 20;
+const initialSecondsCount = 80;
 let minutes = Math.floor(initialSecondsCount / 60);
 let seconds = initialSecondsCount % 60;
 seconds = seconds < 10 ? "0" + seconds : seconds;
