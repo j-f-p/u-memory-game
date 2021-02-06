@@ -83,6 +83,10 @@ header > h1 {
     font-size: 33px;
 }
 
+.deck .card.lock {
+  cursor: default;
+}
+
 /*
  * Styles for the Score Panel
  */

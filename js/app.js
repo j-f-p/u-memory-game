@@ -140,6 +140,14 @@ function buildEmptyStars() {
   }
 }
 
+function lockUnmatchedCards() {
+  for( let i=0; i<nCards; i++ )
+    if(!cardElements[i].classList.contains("match")) {
+      cardElements[i].removeEventListener('click', flipCardFunctions[i]);
+      cardElements[i].classList.add("lock"); // set pointer to default
+    }
+}
+
 function showTopMeritEndModal() {
   // remove reset button on game score panel
   resetFromGame.remove();
@@ -228,13 +236,16 @@ function endGame() {
       showTopMeritEndModal();
   }
   else {
+    lockUnmatchedCards();
     buildEmptyStars();
     showTimeUpEndModal();
   }
 }
 
 function lockOpenMatchingCard(cardIndex) {
-  closeCard(cardIndex); // Thus, a match empties openCardIndices.
+  closeCard(cardIndex); // remove openCardIndex and excess dom element classes
+  cardElements[cardIndex]
+    .removeEventListener('click', flipCardFunctions[cardIndex]);
   cardElements[cardIndex].classList.add("match");
 }
 
@@ -270,8 +281,8 @@ function closeCard(i) {
     openCardIndices.pop();
   else { // openCardIndices.length===2 && openCardIndices[0]===i
     openCardIndices.shift();
-  } // if-else here enables player to close either of two open distinct cards,
-}   // even though this type of move would reduce the player's performance.
+  } // if-else here enables player to close either of two open distinct cards
+}
 
 function openCard(i) {
   cardElements[i].classList.add("open", "show");
@@ -287,9 +298,10 @@ function closeDistinctCards() { // pre-condition: openCardIndices.length===2
   cardElements[openCardIndices.pop()].classList.remove("open", "show");
 } // A for loop here would require more code, and thus, be less efficient.
 
-/* Game-Play Event listeners ***********************************************80*/
-for( let i=0; i<nCards; i++ ) {
-  cardElements[i].addEventListener('click', function() {
+const flipCardFunctions = [];
+
+for( let i=0; i<nCards; i++ )
+  flipCardFunctions.push(function() {
     if(cardElements[i].classList.length===1) { // clicked card is closed
       if(openCardIndices.length===2) { // there are two open distinct cards
         closeDistinctCards();
@@ -300,7 +312,10 @@ for( let i=0; i<nCards; i++ ) {
       closeCard(i);
     }
   });
-}
+
+/* Game-Play Event listeners ***********************************************80*/
+for( let i=0; i<nCards; i++ )
+  cardElements[i].addEventListener('click', flipCardFunctions[i]);
 
 resetFromGame.addEventListener('click', resetFunction);
 
