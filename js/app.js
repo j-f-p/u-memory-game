@@ -53,7 +53,7 @@ let openCardIndices = [];
 // String array of card symbols
 let symbols = ["fas fa-gem", "fas fa-paper-plane", "fas fa-anchor",
   "fas fa-bolt", "fas fa-cube", "fas fa-leaf", "fas fa-bicycle", "fas fa-bomb"];
-const nSymbols = 2; //symbols.length;
+const nSymbols = symbols.length;
 
 symbols = symbols.concat(symbols); // adds a copy of each symbol to form matches
 const nCards = symbols.length;
@@ -141,6 +141,9 @@ function buildEmptyStars() {
 }
 
 function showTopMeritEndModal() {
+  // remove reset button on game score panel
+  resetFromGame.remove();
+
   // determine digital clock display for representing spent time
   count++; // Undo count offset: let count = initialSecondsCount - 1;
   const secondsSpent = initialSecondsCount - count;
@@ -243,12 +246,8 @@ function checkForMatch() {
     nMatches++;
     if(nMatches===nSymbols){ // The game objective is achieved.
       // When matches compeleted in nOpens<25, remove star if time left < 21 s.
-        console.log(count);
-      if( nOpens<28 && count<60 ) { // derived from non-offset: count + 1 < 21
+      if( nOpens<28 && count<20 ) // derived from non-offset: count + 1 < 21
         nStars--; // Mastery (3 stars) requires completion with count + 1 > 20.
-        console.log("not perfect");
-        console.log(count);
-      }
       endGame();
     }
   } // Otherwise, openCardIndices.length remains at 2 and the associated
@@ -259,10 +258,8 @@ function incrementMoveCounter() {
   nOpens++;
   moveCounter.textContent = nOpens;
   // Remove star when nOpens is 25 and 29. Completion earns at least 1 star.
-  if(nOpens===28) {
+  if(nOpens===25)
     nStars--;
-    console.log("whoah");
-  }
   else if(nOpens===29)
     nStars--;
 }
