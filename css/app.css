@@ -70,11 +70,11 @@ header > h1 {
     /* TODO: Consider animating the opening of a card.
      * transform: rotateY(0); */
     background: #02b3e4;
-    cursor: default;
+    font-size: 33px;
 }
 
-.deck .card.show {
-    font-size: 33px;
+.deck .card.open.point > i.fas::before {
+    cursor: pointer;
 }
 
 .deck .card.match {

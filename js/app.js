@@ -143,6 +143,8 @@ function buildEmptyStars() {
 function lockUnmatchedCards() {
   for( let i=0; i<nCards; i++ )
     if(!cardElements[i].classList.contains("match")) {
+      if(cardElements[i].classList.contains("open"))
+        cardElements[i].classList.remove("point");
       cardElements[i].removeEventListener('click', flipCardFunctions[i]);
       cardElements[i].classList.add("lock"); // set pointer to default
     }
@@ -257,13 +259,12 @@ function checkForMatch() {
     nMatches++;
     if(nMatches===nSymbols){ // The game objective is achieved.
       // When matches compeleted in nOpens<25, remove star if time left < 21 s.
-      if( nOpens<28 && count<20 ) // derived from non-offset: count + 1 < 21
-        nStars--; // Mastery (3 stars) requires completion with count + 1 > 20.
+      if( nOpens<25 && count<20 ) // time left < 21 => count + 1 < 21
+        nStars--; // Mastery (3 stars) requires completion with time left > 20.
       endGame();
     }
   } // Otherwise, openCardIndices.length remains at 2 and the associated
-}   // cards are distinct. Thus, any time there are 2 open cards at the
-    // start of the click event, those cards are distinct.
+}   // cards are distinct.
 
 function incrementMoveCounter() {
   nOpens++;
@@ -276,7 +277,7 @@ function incrementMoveCounter() {
 }
 
 function closeCard(i) {
-  cardElements[i].classList.remove("open", "show");
+  cardElements[i].classList.remove("open", "point");
   if(openCardIndices.length===1 || openCardIndices[1]===i)
     openCardIndices.pop();
   else { // openCardIndices.length===2 && openCardIndices[0]===i
@@ -285,7 +286,7 @@ function closeCard(i) {
 }
 
 function openCard(i) {
-  cardElements[i].classList.add("open", "show");
+  cardElements[i].classList.add("open", "point");
   openCardIndices.push(i);
   incrementMoveCounter();
   if(openCardIndices.length===2) { // There are 2 cards open.
@@ -294,8 +295,8 @@ function openCard(i) {
 }
 
 function closeDistinctCards() { // pre-condition: openCardIndices.length===2
-  cardElements[openCardIndices.pop()].classList.remove("open", "show");
-  cardElements[openCardIndices.pop()].classList.remove("open", "show");
+  cardElements[openCardIndices.pop()].classList.remove("open", "point");
+  cardElements[openCardIndices.pop()].classList.remove("open", "point");
 } // A for loop here would require more code, and thus, be less efficient.
 
 const flipCardFunctions = [];
