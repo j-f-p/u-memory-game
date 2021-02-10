@@ -142,6 +142,7 @@ header > h1 {
     display: inline-block;
     width: 32px;
     text-align: center;
+    color: grey;
 }
 
 .modal {
