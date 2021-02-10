@@ -138,13 +138,6 @@ header > h1 {
     background-color: black;
 }
 
-.resetFieldInactive {
-    display: inline-block;
-    width: 32px;
-    text-align: center;
-    color: grey;
-}
-
 .modal {
     position: fixed;
     width: 480px;

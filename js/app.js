@@ -151,9 +151,6 @@ function lockUnmatchedCards() {
 }
 
 function showTopMeritEndModal() {
-  // remove reset button on game score panel
-  resetFromGame.remove();
-
   // determine digital clock display for representing spent time
   count++; // Undo count offset: let count = initialSecondsCount - 1;
   const secondsSpent = initialSecondsCount - count;
@@ -223,12 +220,8 @@ function buildStarsList() {
 function endGame() {
   window.clearInterval(timer); // stop the timer
 
-  // deactivate in-game reset button
-  resetFromGame.removeEventListener('click', resetFunction);
-  resetFromGame.classList.replace('resetField', 'resetFieldInactive');
-
-  // remove tooltip about in-game reset button
-  resetFromGame.removeAttribute('title');
+  // remove reset button on game score panel
+  resetFromGame.remove();
 
   if(count>-1) {
     buildStarsList();
