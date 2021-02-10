@@ -33,11 +33,54 @@ header > h1 {
     margin-bottom: 10px;
 }
 
-/*
- * Styles for the deck of cards
- */
+.score-panel {
+    width: 320px;
+    height: 32px;
+    line-height: 32px; /* = height to vertically center text in score-panel */
+    margin: 0 auto 10px;
+}
 
-.deck {
+.score-panel > .emptyField {
+    width: 80px; /* score-panel centered about moves and timer fields */
+    margin: 0;
+    padding-left: 0;
+    display: inline-block;
+}
+
+.starsField {
+    margin: 0;
+    padding-left: 0;
+    display: inline-block;
+}
+
+.starsField > li {
+    list-style: none;
+    display: inline-block;
+}
+
+.movesField {
+    display: inline-block;
+    width: 80px;
+}
+
+.timerField {
+    display: inline-block;
+    width: 128px; /* sum of field widths = score-panel width */
+}
+
+.resetField {
+    display: inline-block;
+    width: 32px; /* width = height to create a circular border */
+    border-radius: 16px;
+    text-align: center;
+}
+
+.resetField:hover {
+    color: white;
+    background-color: black;
+}
+
+.deck { /* card deck */
     width: 660px;
     height: 660px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
@@ -85,57 +128,6 @@ header > h1 {
 
 .deck .card.lock {
   cursor: default;
-}
-
-/*
- * Styles for the Score Panel
- */
-
-.score-panel {
-    width: 320px;
-    height: 32px;
-    line-height: 32px; /* = height to vertically center text in score-panel */
-    margin: 0 auto 10px;
-}
-
-.score-panel > .emptyField {
-    width: 80px; /* score-panel centered about moves and timer fields */
-    margin: 0;
-    padding-left: 0;
-    display: inline-block;
-}
-
-.starsField {
-    margin: 0;
-    padding-left: 0;
-    display: inline-block;
-}
-
-.starsField > li {
-    list-style: none;
-    display: inline-block;
-}
-
-.movesField {
-    display: inline-block;
-    width: 80px;
-}
-
-.timerField {
-    display: inline-block;
-    width: 128px; /* sum of field widths = score-panel width */
-}
-
-.resetField {
-    display: inline-block;
-    width: 32px; /* width = height to create a circular border */
-    border-radius: 16px;
-    text-align: center;
-}
-
-.resetField:hover {
-    color: white;
-    background-color: black;
 }
 
 .modal {
