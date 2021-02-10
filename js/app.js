@@ -14,13 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     let currentIndex = array.length;
@@ -39,9 +32,9 @@ function shuffle(array) {
 
 /* Game State Variables ****************************************************80*/
 const nStarsMax = 3;
-const maxViews3stars = 24;
+const maxViews3stars = 24; // upper views bound for 3 stars
 const maxViews2stars = 27;
-const minCount3stars = 20;
+const minCount3stars = 20; // lower countdown bound for 3 stars
 let nStars = nStarsMax; // Player performance is initialized as perfect.
 let nViews = 0; // A view is an opening of a card.
 let nMatches = 0;
@@ -58,7 +51,8 @@ let symbols = ["fas fa-gem", "fas fa-paper-plane", "fas fa-anchor",
   "fas fa-bolt", "fas fa-cube", "fas fa-leaf", "fas fa-bicycle", "fas fa-bomb"];
 const nSymbols = symbols.length;
 
-symbols = symbols.concat(symbols); // adds a copy of each symbol to form matches
+// add a copy of each symbol to form matches
+symbols = symbols.concat(symbols);
 const nCards = symbols.length;
 
 // String array of card symbols shuffled
@@ -91,17 +85,6 @@ const timerElement = document.getElementsByClassName('digitalTime')[0];
 
 /* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 const resetFromGame = document.getElementsByClassName('resetField')[0];
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the card view counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 
 /* Auxiliary functions *****************************************************80*/
 const resetFunction = function() {
@@ -157,10 +140,12 @@ function showTopMeritEndModal() {
   // determine digital clock display for representing spent time
   count++; // Undo count offset: let count = initialSecondsCount - 1;
   const secondsSpent = initialSecondsCount - count;
-  const clockMinutes = Math.floor(secondsSpent / 60);
-  let clockSeconds = secondsSpent % 60;
-  clockSeconds = clockSeconds < 10 ? "0" + clockSeconds : clockSeconds;
-  const digitalClock = clockMinutes + ":" + clockSeconds;
+  let timeSpent = `${secondsSpent} sec`;
+  let stats = `${nViews} views<br>in ${timeSpent}`
+  if(secondsSpent > 59) {
+    timeSpent = `1 min and ${secondsSpent % 60} sec`;
+    stats = `${nViews} views in<br>${timeSpent}`;
+  }
 
   // define modal
   const endModal = document.createElement('div');
@@ -170,7 +155,7 @@ function showTopMeritEndModal() {
    `<h1><i class="big fas fa-medal"></i></h1>
     <h1>You've achieved mastery!</h1>
     ${starsList.outerHTML}
-    <h1>${nViews} views<br>in ${digitalClock} [m:ss]</h1>`;
+    <h1>${stats}</h1>`;
 
   // render modal
   document.getElementsByTagName('body')[0].appendChild(endModal);
@@ -180,10 +165,12 @@ function showMeritEndModal() {
   // determine digital clock display for representing spent time
   count++; // Undo count offset: let count = initialSecondsCount - 1;
   const secondsSpent = initialSecondsCount - count;
-  const clockMinutes = Math.floor(secondsSpent / 60);
-  let clockSeconds = secondsSpent % 60;
-  clockSeconds = clockSeconds < 10 ? "0" + clockSeconds : clockSeconds;
-  const digitalClock = clockMinutes + ":" + clockSeconds;
+  let timeSpent = `${secondsSpent} sec`;
+  let stats = `${nViews} views<br>in ${timeSpent}`
+  if(secondsSpent > 59) {
+    timeSpent = `1 min and ${secondsSpent % 60} sec`;
+    stats = `${nViews} views in<br>${timeSpent}`;
+  }
 
   // define modal
   const endModal = document.createElement('div');
@@ -193,7 +180,7 @@ function showMeritEndModal() {
    `<h1><i class="big fas fa-award"></i></h1>
     <h1>Matches Completed!</h1>
     ${starsList.outerHTML}
-    <h1>${nViews} views<br>in ${digitalClock} [m:ss]</h1>
+    <h1>${stats}</h1>
     <div class="modalResetField" title="Play again?">
       <i class="fas fa-redo-alt"></i>
     </div>`;
