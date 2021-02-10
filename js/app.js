@@ -220,6 +220,9 @@ function buildStarsList() {
 function endGame() {
   window.clearInterval(timer); // stop the timer
 
+  // right align timer text
+  document.getElementsByClassName('timerField')[0].classList.add("alignRight");
+
   // remove reset button on game score panel
   resetFromGame.remove();
 

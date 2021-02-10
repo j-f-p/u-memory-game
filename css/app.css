@@ -38,24 +38,9 @@ header > h1 {
     height: 32px;
     line-height: 32px; /* = height to vertically center text in score-panel */
     margin: 0 auto 10px;
-}
-
-.score-panel > .emptyField {
-    width: 80px; /* score-panel centered about moves and timer fields */
-    margin: 0;
-    padding-left: 0;
-    display: inline-block;
-}
-
-.starsField {
-    margin: 0;
-    padding-left: 0;
-    display: inline-block;
-}
-
-.starsField > li {
-    list-style: none;
-    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .movesField {
@@ -65,7 +50,11 @@ header > h1 {
 
 .timerField {
     display: inline-block;
-    width: 128px; /* sum of field widths = score-panel width */
+    width: 112px; /* width > maximum text width, a multiple of 16 */
+} /* Here 16 is the largest factor of 2 to arrive at a tight upper bound. */
+
+.timerField.alignRight {
+  text-align: right;
 }
 
 .resetField {
@@ -155,6 +144,22 @@ header > h1 {
     font-size: 80px;
 }
 
+.starsField {
+    margin: 0;
+    padding-left: 0;
+    display: inline-block;
+}
+
+.starsField > li {
+    list-style: none;
+    display: inline-block;
+}
+
+.modal > .starsField .fas,
+.modal > .starsField .far {
+    font-size: 48px;
+}
+
 .modalResetField {
     width: 32px;
     height: 32px;
@@ -171,9 +176,4 @@ header > h1 {
 .modalResetField:hover { /* highlight reset button */
     color: white;
     background-color: black;
-}
-
-.modal > .starsField .fas,
-.modal > .starsField .far {
-    font-size: 48px;
 }
