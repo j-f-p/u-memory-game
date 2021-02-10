@@ -38,9 +38,12 @@ function shuffle(array) {
 }
 
 /* Game State Variables ****************************************************80*/
-let nOpens = 0; // A game move here equals an opening of a card.
 const nStarsMax = 3;
-let nStars = 3; // Player performance is initialized at best possible value.
+const maxViews3stars = 24;
+const maxViews2stars = 27;
+const minCount3stars = 20;
+let nStars = nStarsMax; // Player performance is initialized as perfect.
+let nViews = 0; // A view is an opening of a card.
 let nMatches = 0;
 
 // a variable to monitor the number of open cards and their identity
@@ -80,8 +83,8 @@ emptyStar.innerHTML = `<i class="far fa-star"></i>`
 const starsList = document.createElement('ul');
 starsList.classList.add("starsField");
 
-/* Move count - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const moveCounter = document.getElementsByClassName('moves')[0];
+/* Card view count- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+const viewCounter = document.getElementsByClassName('views')[0];
 
 /* Elapsed time in seconds- - - - - - - - - - - - - - - - - - - - - - - - - - */
 const timerElement = document.getElementsByClassName('digitalTime')[0];
@@ -96,7 +99,7 @@ const resetFromGame = document.getElementsByClassName('resetField')[0];
  *  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+ *    + increment the card view counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
@@ -108,7 +111,7 @@ const resetFunction = function() {
 function showTimeUpEndModal() {
   // set singular or plural word depending on its associated quantity's value
   const matchWord = nMatches===1 ? "match" : "matches";
-  const moveWord = nOpens===1 ? "move" : "moves";
+  const viewWord = nViews===1 ? "view" : "views";
 
   // define modal
   const endModal = document.createElement('div');
@@ -118,7 +121,7 @@ function showTimeUpEndModal() {
    `<h1><i class="big fas fa-hourglass-end"></i></h1>
     <h1>Time's up!</h1>
     ${starsList.outerHTML}
-    <h1>${nMatches} ${matchWord}<br>in ${nOpens} ${moveWord}</h1>
+    <h1>${nMatches} ${matchWord}<br>in ${nViews} ${viewWord}</h1>
     <div class="modalResetField" title="Play again?">
       <i class="fas fa-redo-alt"></i>
     </div>`;
@@ -167,7 +170,7 @@ function showTopMeritEndModal() {
    `<h1><i class="big fas fa-medal"></i></h1>
     <h1>You've achieved mastery!</h1>
     ${starsList.outerHTML}
-    <h1>${nOpens} moves<br>in ${digitalClock} [m:ss]</h1>`;
+    <h1>${nViews} views<br>in ${digitalClock} [m:ss]</h1>`;
 
   // render modal
   document.getElementsByTagName('body')[0].appendChild(endModal);
@@ -190,7 +193,7 @@ function showMeritEndModal() {
    `<h1><i class="big fas fa-award"></i></h1>
     <h1>Matches Completed!</h1>
     ${starsList.outerHTML}
-    <h1>${nOpens} moves<br>in ${digitalClock} [m:ss]</h1>
+    <h1>${nViews} views<br>in ${digitalClock} [m:ss]</h1>
     <div class="modalResetField" title="Play again?">
       <i class="fas fa-redo-alt"></i>
     </div>`;
@@ -254,21 +257,23 @@ function checkForMatch() {
     lockOpenMatchingCard(openCardIndices[0]);
     nMatches++;
     if(nMatches===nSymbols){ // The game objective is achieved.
-      // When matches compeleted in nOpens<25, remove star if time left < 21 s.
-      if( nOpens<25 && count<20 ) // time left < 21 => count + 1 < 21
-        nStars--; // Mastery (3 stars) requires completion with time left > 20.
+      // When matches compeleted in nViews < maxViews3stars, remove star if
+      // count < minCount3stars.
+      if( nViews < maxViews3stars  &&  count < minCount3stars )
+        nStars--;
       endGame();
     }
   } // Otherwise, openCardIndices.length remains at 2 and the associated
 }   // cards are distinct.
 
 function incrementMoveCounter() {
-  nOpens++;
-  moveCounter.textContent = nOpens;
-  // Remove star when nOpens is 25 and 29. Completion earns at least 1 star.
-  if(nOpens===25)
+  nViews++;
+  viewCounter.textContent = nViews;
+  // Remove star when nViews is maxViews3stars and maxViews2stars.
+  // Completion earns at least 1 star.
+  if(nViews===maxViews3stars)
     nStars--;
-  else if(nOpens===29)
+  else if(nViews===maxViews2stars)
     nStars--;
 }
 
