@@ -2,13 +2,13 @@
 // When viewport window is smaller than game content, upon page load,
 // scroll view so that game is horizontally centered.
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   const windowWidth = window.innerWidth - 17;
   /* 17 px is browswer scroll bar width on Chrome and FireFox.
      TODO: This correction should be automatically determined. Touch screen
      mode without scroll bars should not have a correction. */
   const deckWidth =
-    document.getElementsByClassName('deck')[0].getBoundingClientRect().width;
+    document.getElementsByClassName("deck")[0].getBoundingClientRect().width;
   if( windowWidth < deckWidth ) {
     window.scroll( (deckWidth - windowWidth)/2, 0);
   }
@@ -59,32 +59,32 @@ const nCards = symbols.length;
 symbols = shuffle(symbols);
 
 // Apply shuffled order of symbols to card elements
-const cardElements = document.getElementsByClassName('card');
+const cardElements = document.getElementsByClassName("card");
 
 for( let i=0; i<nCards; i++ ) {
   cardElements[i].firstElementChild.className = symbols[i];
 }
 
 /* Star - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const star = document.createElement('li');
+const star = document.createElement("li");
 star.innerHTML = `<i class="fas fa-star"></i>`
 
 /* Empty star - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const emptyStar = document.createElement('li');
+const emptyStar = document.createElement("li");
 emptyStar.innerHTML = `<i class="far fa-star"></i>`
 
 /* Star rating  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const starsList = document.createElement('ul');
+const starsList = document.createElement("ul");
 starsList.classList.add("starsField");
 
 /* Card view count- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const viewCounter = document.getElementsByClassName('views')[0];
+const viewCounter = document.getElementsByClassName("views")[0];
 
 /* Elapsed time in seconds- - - - - - - - - - - - - - - - - - - - - - - - - - */
-const timerElement = document.getElementsByClassName('digitalTime')[0];
+const timerElement = document.getElementsByClassName("digitalTime")[0];
 
 /* Reset button - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-const resetFromGame = document.getElementsByClassName('resetField')[0];
+const resetFromGame = document.getElementsByClassName("resetField")[0];
 
 /* Auxiliary functions *****************************************************80*/
 const resetFunction = function() {
@@ -97,7 +97,7 @@ function showTimeUpEndModal() {
   const viewWord = nViews===1 ? "view" : "views";
 
   // define modal
-  const endModal = document.createElement('div');
+  const endModal = document.createElement("div");
   endModal.className="modal";
 
   endModal.innerHTML =
@@ -110,18 +110,18 @@ function showTimeUpEndModal() {
     </div>`;
 
   // render modal
-  document.getElementsByTagName('body')[0].appendChild(endModal);
+  document.getElementsByTagName("body")[0].appendChild(endModal);
 
   // activate in-modal reset button
-  document.getElementsByClassName('modalResetField')[0].addEventListener(
-    'click', resetFunction
+  document.getElementsByClassName("modalResetField")[0].addEventListener(
+    "click", resetFunction
   );
 }
 
 function buildEmptyStars() {
   starsList.appendChild(emptyStar);
   for( let i=1; i<nStarsMax; i++ ) {
-    starsList.appendChild(document.createTextNode(' '));
+    starsList.appendChild(document.createTextNode(" "));
     starsList.appendChild(emptyStar.cloneNode(true));
   }
 }
@@ -131,7 +131,7 @@ function lockUnmatchedCards() {
     if(!cardElements[i].classList.contains("match")) {
       if(cardElements[i].classList.contains("open"))
         cardElements[i].classList.remove("point");
-      cardElements[i].removeEventListener('click', flipCardFunctions[i]);
+      cardElements[i].removeEventListener("click", flipCardFunctions[i]);
       cardElements[i].classList.add("lock"); // set pointer to default
     }
 }
@@ -148,7 +148,7 @@ function showTopMeritEndModal() {
   }
 
   // define modal
-  const endModal = document.createElement('div');
+  const endModal = document.createElement("div");
   endModal.className="modal";
 
   endModal.innerHTML =
@@ -158,7 +158,7 @@ function showTopMeritEndModal() {
     <h1>${stats}</h1>`;
 
   // render modal
-  document.getElementsByTagName('body')[0].appendChild(endModal);
+  document.getElementsByTagName("body")[0].appendChild(endModal);
 }
 
 function showMeritEndModal() {
@@ -173,7 +173,7 @@ function showMeritEndModal() {
   }
 
   // define modal
-  const endModal = document.createElement('div');
+  const endModal = document.createElement("div");
   endModal.className="modal";
 
   endModal.innerHTML =
@@ -186,11 +186,11 @@ function showMeritEndModal() {
     </div>`;
 
   // render modal
-  document.getElementsByTagName('body')[0].appendChild(endModal);
+  document.getElementsByTagName("body")[0].appendChild(endModal);
 
   // activate in-modal reset button
-  document.getElementsByClassName('modalResetField')[0].addEventListener(
-    'click', resetFunction
+  document.getElementsByClassName("modalResetField")[0].addEventListener(
+    "click", resetFunction
   );
 }
 
@@ -198,11 +198,11 @@ function buildStarsList() {
   let nEmptyStars = nStarsMax - nStars;
   starsList.appendChild(star);
   for( let i=1; i<nStars; i++ ) {
-    starsList.appendChild(document.createTextNode(' '));
+    starsList.appendChild(document.createTextNode(" "));
     starsList.appendChild(star.cloneNode(true));
   }
   for( let i=0; i<nEmptyStars; i++ ) {
-    starsList.appendChild(document.createTextNode(' '));
+    starsList.appendChild(document.createTextNode(" "));
     starsList.appendChild(emptyStar.cloneNode(true));
   }
 }
@@ -211,7 +211,7 @@ function endGame() {
   window.clearInterval(timer); // stop the timer
 
   // right align timer text
-  document.getElementsByClassName('timerField')[0].classList.add("alignRight");
+  document.getElementsByClassName("timerField")[0].classList.add("alignRight");
 
   // remove reset button on game score panel
   resetFromGame.remove();
@@ -233,7 +233,7 @@ function endGame() {
 function lockOpenMatchingCard(cardIndex) {
   closeCard(cardIndex); // remove openCardIndex and excess dom element classes
   cardElements[cardIndex]
-    .removeEventListener('click', flipCardFunctions[cardIndex]);
+    .removeEventListener("click", flipCardFunctions[cardIndex]);
   cardElements[cardIndex].classList.add("match");
 }
 
@@ -304,9 +304,9 @@ for( let i=0; i<nCards; i++ )
 
 /* Game-Play Event listeners ***********************************************80*/
 for( let i=0; i<nCards; i++ )
-  cardElements[i].addEventListener('click', flipCardFunctions[i]);
+  cardElements[i].addEventListener("click", flipCardFunctions[i]);
 
-resetFromGame.addEventListener('click', resetFunction);
+resetFromGame.addEventListener("click", resetFunction);
 
 /* Timer: a basic timer that counts down seconds ***************************80*/
 const initialSecondsCount = 80;
